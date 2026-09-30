@@ -40,7 +40,11 @@ func run() error {
 	}
 	defer pool.Close()
 	
+	api := &API{store: &Store{pool: pool}}
+
 	mux := http.NewServeMux()
+	mux.HandleFunc("POST /applications", api.createApplication)
+	mux.HandleFunc("GET /applications/{id}", api.getApplication)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte("ok"))
