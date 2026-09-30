@@ -1,4 +1,4 @@
-.PHONY: up down logs ps psql clean
+.PHONY: up down logs ps psql clean migrate-up migrate-down
 
 up:
 	docker compose up -d --wait
@@ -17,3 +17,9 @@ psql:
 
 clean:
 	docker compose down -v
+
+migrate-up:
+	docker compose run --rm migrate up
+
+migrate-down:
+	docker compose run --rm migrate down 1

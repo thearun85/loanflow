@@ -16,6 +16,18 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+  migrate:
+    image: migrate/migrate:v4.18.3
+    profiles: ["tools"]
+    volumes:
+      - ./services/application-api/migrations:/migrations
+    entrypoint:
+      - migrate
+      - -path=/migrations
+      - -database=postgres://loanflow:loanflow@postgres:5432/loanflow?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   pgdata:
